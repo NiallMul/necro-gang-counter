@@ -16,28 +16,24 @@ class CharacterInputForm extends React.Component {
     }
 
     displayForm = () => {
-        this.setState({showForm:!this.state.showForm});
+        this.setState({showForm: !this.state.showForm});
         console.log(`show form value: ${this.state.showForm}`);
     }
 
     deleteFighter = (props) => {
-        let newList
-        //TODO fix filter it is wrong
-        if (this.state.unitList.length <= 1){
-            newList = [];
-        }else{
-            newList = this.state.unitList.filter((_, i) => i !== props);
-        }
+        let newList = this.state.unitList.filter((entry) => entry.key != props);
         this.setState({unitList: newList});
     };
 
     addFighter = (props) => {
         props.preventDefault();
-        let newFighter = {name:props.target[0].value, class:props.target[1].value, desc:props.target[2].value}
+        let newFighter = {name: props.target[0].value, class: props.target[1].value, desc: props.target[2].value}
         let entryKey = this.state.unitList.length;
-        this.setState({unitList : this.state.unitList.concat(<div key={entryKey} id={`unit-entry`}><UnitCard fighter={newFighter}/>
-            <button className={`delete-fighter-btn`} onClick={() => this.deleteFighter(entryKey)}>X</button>
-        </div>)});
+        this.setState({
+            unitList: this.state.unitList.concat(<div key={entryKey} id={`unit-entry`}><UnitCard fighter={newFighter}/>
+                <button className={`delete-fighter-btn`} onClick={() => this.deleteFighter(entryKey)}>X</button>
+            </div>)
+        });
         console.log(`list in state: ${this.state.unitList}`);
         this.displayForm();
     };
@@ -59,7 +55,8 @@ class CharacterInputForm extends React.Component {
                                 className="modal-cover"
                             >
                                 <div className="modal-area">
-                                    <button id={`form-cancel-btn`} className={`_modal-close`} onClick={this.displayForm}>
+                                    <button id={`form-cancel-btn`} className={`_modal-close`}
+                                            onClick={this.displayForm}>
                                         <span id="close-modal" className="_hide-visual">Close</span>
                                         <svg className="_modal-close-icon" viewBox="0 0 40 40">
                                             <path d="M 10,10 L 30,30 M 30,10 L 10,30"/>
@@ -69,7 +66,7 @@ class CharacterInputForm extends React.Component {
                                     <div className={`modal-body`}>
                                         <form onSubmit={this.addFighter}>
                                             <input id={`fighter-name`} type={`text`} title={`Name`}
-                                                   placeholder={`name`} />
+                                                   placeholder={`name`}/>
                                             <br/>
                                             <input id={`fighter-class`} type={`text`} title={`class`}
                                                    placeholder={`class`}/>
